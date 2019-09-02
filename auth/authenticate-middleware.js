@@ -6,7 +6,7 @@ const users = require('../database/usersQueries');
 
 module.exports = async (req, res, next) => {
   try {
-    if (req.session && req.session.user && await users.getUserById(req.session.user.id)) {
+    if (req.session && req.session.user) {
       next();
     } else {
       res.status(403).json({ message: 'invalid credentials' });

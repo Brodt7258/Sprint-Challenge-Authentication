@@ -1,16 +1,19 @@
 const router = require('express').Router();
+const bcrypt = require('bcrypt');
+
 const users = require('../database/usersQueries');
 
 router.post('/register', async (req, res) => {
   // implement registration
   try {
     const { username, password } = req.body;
-
+    
     const hash = bcrypt.hashSync(password, 8);
     const newUser = await users.addUser({ username, password: hash });
 
     res.status(201).json(newUser);
   } catch(err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
