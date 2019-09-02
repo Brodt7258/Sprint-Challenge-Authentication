@@ -2,7 +2,16 @@
   complete the middleware code to check if the user is logged in
   before granting access to the next middleware/route handler
 */
+const users = require('../database/usersQueries');
 
-module.exports = (req, res, next) => {
-  res.status(401).json({ you: 'shall not pass!' });
+module.exports = async (req, res, next) => {
+  try {
+    if (req.session && req.session.user) {
+      next();
+    } else {
+      res.status(403).json({ message: 'invalid credentials' });
+    }
+  } catch(err) {
+    res.status(500).json(err);
+  }
 };
